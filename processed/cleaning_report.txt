@@ -1,0 +1,70 @@
+------------------------------------------------------------
+  DATA CLEANING PIPELINE 
+  demarrage : 2026-04-11 23:03:08
+------------------------------------------------------------
+
+ chargement des fichiers
+  [All_Beauty.jsonl] 701,528 lignes chargées, 0 erreurs JSON ignorées
+  [meta_All_Beauty.jsonl] 112,590 lignes chargées, 0 erreurs JSON ignorées
+
+  nettoyage des reviews
+  cleaning : Reviews 
+  SNAPSHOT : Reviews brutes
+  Lignes   : 701,528
+  Colonnes : ['rating', 'title', 'text', 'images', 'asin', 'parent_asin', 'user_id', 'timestamp', 'helpful_vote', 'verified_purchase']
+  Doublons supprimes     : 7,599
+  Ratings invalides supprimes : 0
+  Reviews hors longueur [<10 / >5000] : 27,143
+  Lignes sans user_id supprimees : 0
+  Lignes sans parent_asin supprimees : 0
+
+  Reviews : 701,528 → 666,786 (−34,742)
+  Distribution des ratings :
+rating
+1.0     98979
+2.0     42008
+3.0     54378
+4.0     75879
+5.0    395542
+
+  Nettoyage des metadonnees
+  CLEANING : metadonnes produits (meta_All_Beauty.jsonl)
+  SNAPSHOT : metadonnees brutes
+  Lignes   : 112,590
+  Colonnes : ['main_category', 'title', 'average_rating', 'rating_number', 'features', 'description', 'price', 'images', 'videos', 'store', 'categories', 'details', 'parent_asin', 'bought_together']
+  Nulls    :
+price               94886
+store               11331
+bought_together    112590
+  Produits en double supprimes : 0
+  Prix non parsés (NaN) : 94,886 / 112,590
+  Prix imputés par médiane catégorie
+  Produits sans titre : 12
+
+  metadonnes : 112,590 → 112,590 (−0)
+
+------------------------------------------------------------
+  STATISTIQUES FINALES
+------------------------------------------------------------
+  Reviews propres        : 666,786
+  Produits propres       : 112,590
+
+  Ratings — mean  : 3.940
+  Ratings — std   : 1.503
+  Ratings — médiane : 5.0
+
+  Longueur reviews (mots) :
+    min : 1
+    mean: 33.8
+    max : 943
+  Produits uniques     : 110,465
+  Produits uniques     : 110,465
+  Sparsité matrice U×P : 1.0000 (100.00%)
+
+ sauvegarde
+
+============================================================
+  SAUVEGARDE
+============================================================
+  reviews_clean.parquet    (666,786 lignes)
+  metadata_clean.parquet   (112,590 lignes)
