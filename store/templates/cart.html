@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart - GlowMarket{% endblock %}
+{% block page_name %}cart{% endblock %}
+{% block nav_cart %}active{% endblock %}
+
+{% block content %}
+<main class="page-content" id="cartPage">
+  <div class="page-container">
+
+    <div class="page-header">
+      <h1>Shopping Cart</h1>
+      <p>{{ cart_items|length }} item{{ cart_items|length|pluralize }}</p>
+    </div>
+
+    {% if cart_items %}
+    <div class="cart-content">
+
+      <div class="cart-items" id="cartItems">
+        {% for item in cart_items %}
+        <div class="cart-item" data-id="{{ item.product.parent_asin }}">
+          <div class="cart-item-image">
+            <a href="{% url 'product' item.product.parent_asin %}">
+              <img src="{{ item.product.highres_image_url }}" alt="{{ item.product.title }}">
+            </a>
+          </div>
+          <div class="cart-item-details">
+            <h3 class="cart-item-title">
+              <a href="{% url 'product' item.product.parent_asin %}">{{ item.product.title }}</a>
+            </h3>
+            <p class="cart-item-brand">{{ item.product.store }}</p>
+            <span class="cart-item-condition">New</span>
+            <div class="cart-item-price">${{ item.product.price }}</div>
+          </div>
+          <div class="cart-item-actions">
+            <form method="post" action="{% url 'remove_from_cart' item.product.parent_asin %}">
+              {% csrf_token %}
+              <button type="submit" class="remove-item-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="cart-summary" id="cartSummary">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>${{ subtotal }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>{% if shipping_total == 0 %}Free{% else %}${{ shipping_total }}{% endif %}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>${{ total }}</span>
+        </div>
+        <form method="post" action="{% url 'checkout' %}">
+          {% csrf_token %}
+          <button type="submit" class="checkout-btn">Proceed to checkout</button>
+        </form>
+        <a href="{% url 'home' %}" class="continue-shopping-btn">Continue shopping</a>
+      </div>
+
+    </div>
+
+    {% else %}
+    <div class="empty-state" id="emptyCart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+      <h3>Your cart is empty</h3>
+      <p>Looks like you have not added anything to your cart yet.</p>
+      <a href="{% url 'home' %}" class="browse-btn">Start shopping</a>
+    </div>
+    {% endif %}
+
+  </div>
+</main>
+{% endblock %}

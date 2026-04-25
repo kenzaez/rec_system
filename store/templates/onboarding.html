@@ -1,0 +1,325 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BeautyRec – Get Started</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint:    #09B583;
+      --mint-lt: #E8F8F3;
+      --dark:    #1A1A2E;
+      --gray:    #6B7280;
+      --gray-lt: #F4F4F6;
+      --border:  #E5E7EB;
+      --white:   #FFFFFF;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-lt);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--dark); }
+    .logo span { color: var(--mint); }
+    .nav-skip { font-size: 14px; color: var(--gray); text-decoration: none; }
+    .nav-skip:hover { color: var(--dark); }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 56px 24px 32px;
+    }
+    .step-badge {
+      display: inline-block;
+      background: var(--mint-lt);
+      color: var(--mint);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .header p {
+      font-size: 16px;
+      color: var(--gray);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* PROGRESS */
+    .progress-wrap {
+      max-width: 480px;
+      margin: 0 auto 40px;
+      padding: 0 24px;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 8px;
+    }
+    .progress-label span { color: var(--mint); font-weight: 600; }
+    .progress-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--mint);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* PRODUCTS GRID */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+    .card.rated { border-color: var(--mint); }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      background: var(--gray-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-body { padding: 12px; }
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--dark);
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+    .card-store { font-size: 11px; color: var(--gray); margin-bottom: 10px; }
+
+    .stars {
+      display: flex;
+      gap: 3px;
+    }
+    .star {
+      font-size: 18px;
+      cursor: pointer;
+      color: #D1D5DB;
+      transition: color 0.15s, transform 0.1s;
+      line-height: 1;
+    }
+    .star:hover, .star.active { color: #FBBF24; }
+    .star:active { transform: scale(1.3); }
+
+    .card-rated-badge {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--mint);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+    .card-rated-badge.show { display: flex; }
+
+    /* FOOTER CTA */
+    .cta-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .cta-info { font-size: 14px; color: var(--gray); }
+    .cta-info strong { color: var(--dark); }
+    .btn {
+      padding: 12px 32px;
+      background: var(--mint);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn:not(:disabled):hover { background: #07A374; }
+
+    @media (max-width: 600px) {
+      .header h1 { font-size: 26px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .cta-bar { padding: 12px 20px; }
+      nav { padding: 14px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Beauty<span>Rec</span></div>
+  <a href="{% url 'index' %}" class="nav-skip">Skip for now →</a>
+</nav>
+
+<div class="header">
+  <div class="step-badge">Step 1 of 1</div>
+  <h1>What do you love?</h1>
+  <p>Rate a few products so we can personalize your recommendations. The more you rate, the better we get.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="rated-count">0</span> rated &nbsp;·&nbsp; rate at least 3 to continue
+    <span id="pct">0%</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="grid" id="products-grid">
+    {% for product in products %}
+    <div class="card" id="card-{{ forloop.counter }}" data-asin="{{ product.parent_asin }}">
+      <div class="card-img">
+        {% if product.highres_image_url %}
+          <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" onerror="this.parentElement.innerHTML='💄'"/>
+        {% else %}
+          💄
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <div class="card-title">{{ product.title|default:"Beauty Product"|truncatechars:50 }}</div>
+        <div class="card-store">{{ product.store|default:"" }}</div>
+        <div class="stars" data-card="{{ forloop.counter }}" data-asin="{{ product.parent_asin }}">
+          <span class="star" data-val="1">★</span>
+          <span class="star" data-val="2">★</span>
+          <span class="star" data-val="3">★</span>
+          <span class="star" data-val="4">★</span>
+          <span class="star" data-val="5">★</span>
+        </div>
+        <div class="card-rated-badge" id="badge-{{ forloop.counter }}">✓ Rated</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="cta-bar">
+  <div class="cta-info">
+    Rate at least <strong>3 products</strong> to unlock your recommendations
+  </div>
+  <form method="POST" action="{% url 'onboarding' %}" id="onboarding-form">
+    {% csrf_token %}
+    <input type="hidden" name="ratings" id="ratings-input" value="{}"/>
+    <button type="submit" class="btn" id="continue-btn" disabled>Continue →</button>
+  </form>
+</div>
+
+<script>
+  const ratings = {};
+  const MIN_RATINGS = 3;
+  const TOTAL = {{ products|length }};
+
+  function updateProgress() {
+    const count = Object.keys(ratings).length;
+    const pct = Math.min(Math.round((count / MIN_RATINGS) * 100), 100);
+    document.getElementById('rated-count').textContent = count;
+    document.getElementById('pct').textContent = pct + '%';
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('continue-btn').disabled = count < MIN_RATINGS;
+  }
+
+  document.querySelectorAll('.stars').forEach(function(starsEl) {
+    const stars = starsEl.querySelectorAll('.star');
+    const asin = starsEl.dataset.asin;
+    const cardId = starsEl.dataset.card;
+
+    stars.forEach(function(star) {
+      star.addEventListener('mouseover', function() {
+        const val = parseInt(star.dataset.val);
+        stars.forEach(function(s) {
+          s.style.color = parseInt(s.dataset.val) <= val ? '#FBBF24' : '#D1D5DB';
+        });
+      });
+
+      star.addEventListener('mouseleave', function() {
+        const current = ratings[asin] || 0;
+        stars.forEach(function(s) {
+          s.style.color = parseInt(s.dataset.val) <= current ? '#FBBF24' : '#D1D5DB';
+        });
+      });
+
+      star.addEventListener('click', function() {
+        const val = parseInt(star.dataset.val);
+        ratings[asin] = val;
+
+        stars.forEach(function(s) {
+          s.style.color = parseInt(s.dataset.val) <= val ? '#FBBF24' : '#D1D5DB';
+          s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+        });
+
+        document.getElementById('card-' + cardId).classList.add('rated');
+        document.getElementById('badge-' + cardId).classList.add('show');
+        document.getElementById('ratings-input').value = JSON.stringify(ratings);
+        updateProgress();
+      });
+    });
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.title }} - GlowMarket{% endblock %}
+{% block meta_description %}{{ product.description|truncatechars:160 }}{% endblock %}
+{% block page_name %}product{% endblock %}
+
+{% block content %}
+<main class="page-content" id="productPage">
+  <div class="product-detail-container">
+
+    <a href="{% url 'home' %}" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to products
+    </a>
+
+    <div class="product-detail-grid">
+
+      <!-- Gallery -->
+      <div class="product-gallery">
+        <div class="product-main-image">
+          <img id="productMainImage"
+               src="{{ product.highres_image_url }}"
+               alt="{{ product.title }}">
+        </div>
+        <div class="product-thumbnails" id="productThumbnails">
+          <div class="product-thumbnail active"
+               data-index="0"
+               data-src="{{ product.highres_image_url }}">
+            <img src="{{ product.highres_image_url }}" alt="{{ product.title }}">
+          </div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="product-detail-info">
+        <div class="product-detail-seller">
+          <div class="seller-avatar">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt="{{ product.store }}">
+          </div>
+          <div class="seller-info">
+            <span class="seller-name">{{ product.store }}</span>
+            <div class="seller-rating">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>{{ product.average_rating|floatformat:1 }} ({{ product.rating_number }} reviews)</span>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="product-detail-title">{{ product.title }}</h1>
+        <div class="product-detail-price">${{ product.price }}</div>
+        <div class="product-detail-original-price">${{ product.price|add:10 }}</div>
+
+        <div class="product-detail-meta">
+          <span class="product-detail-brand">{{ product.store }}</span>
+          <span class="product-detail-condition">New</span>
+        </div>
+
+        <p class="product-detail-description">{{ product.description }}</p>
+
+        <div class="product-detail-shipping">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+          <span>Shipping: <strong>Free on orders over $50</strong></span>
+        </div>
+
+        <div class="product-detail-actions">
+          <form method="post" action="{% url 'add_to_cart' product.parent_asin %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="buy-now-btn">Buy now</button>
+          </form>
+
+          <form method="post" action="{% url 'add_to_cart' product.parent_asin %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="add-to-cart-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              Add to cart
+            </button>
+          </form>
+
+          <form method="post" action="{% url 'toggle_favourite' product.parent_asin %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="favourite-detail-btn"
+                    id="favouriteDetailBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Similar Products -->
+    <section class="similar-products">
+      <h2>Similar Products</h2>
+      <div class="similar-products-grid" id="similarProductsGrid">
+        {% for similar in similar_products %}
+        <article class="product-card" data-id="{{ similar.parent_asin }}">
+          <div class="product-image">
+            <a href="{% url 'product' similar.parent_asin %}">
+              <img src="{{ similar.highres_image_url }}" alt="{{ similar.title }}" loading="lazy">
+            </a>
+          </div>
+          <div class="product-info">
+            <div class="product-price">${{ similar.price }}</div>
+            <h3 class="product-title">
+              <a href="{% url 'product' similar.parent_asin %}">{{ similar.title }}</a>
+            </h3>
+            <div class="product-meta">
+              <span class="product-brand">{{ similar.store }}</span>
+              <span class="product-condition">New</span>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Thumbnail image switcher
+  document.querySelectorAll('.product-thumbnail').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      document.getElementById('productMainImage').src = thumb.dataset.src;
+      document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    });
+  });
+</script>
+{% endblock %}

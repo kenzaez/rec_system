@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}GlowMarket - Beauty & Personal Care Marketplace{% endblock %}
+{% block page_name %}home{% endblock %}
+
+{% block categories_bar %}
+<nav class="categories-bar" id="categoriesBar">
+  <div class="categories-container">
+    <button class="category-btn {% if not request.GET.category or request.GET.category == 'all' %}active{% endif %}" data-category="all">All</button>
+    <button class="category-btn {% if request.GET.category == 'skincare' %}active{% endif %}" data-category="skincare">Skincare</button>
+    <button class="category-btn {% if request.GET.category == 'makeup' %}active{% endif %}" data-category="makeup">Makeup</button>
+    <button class="category-btn {% if request.GET.category == 'haircare' %}active{% endif %}" data-category="haircare">Haircare</button>
+    <button class="category-btn {% if request.GET.category == 'fragrance' %}active{% endif %}" data-category="fragrance">Fragrance</button>
+    <button class="category-btn {% if request.GET.category == 'bodycare' %}active{% endif %}" data-category="bodycare">Body Care</button>
+    <button class="category-btn {% if request.GET.category == 'nails' %}active{% endif %}" data-category="nails">Nails</button>
+    <button class="category-btn {% if request.GET.category == 'tools' %}active{% endif %}" data-category="tools">Tools</button>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<main class="main-content" id="homePage">
+  <div class="content-container">
+
+    <!-- Filters Sidebar -->
+    <aside class="filters-sidebar" id="filtersSidebar">
+      <div class="filters-header">
+        <h2>Filters</h2>
+        <button class="clear-filters-btn" id="clearFiltersBtn">Clear all</button>
+      </div>
+
+      <div class="filter-section">
+        <button class="filter-toggle" data-filter="categories">
+          <span>Categories</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="filter-content open" id="filter-categories">
+          {% for cat in categories %}
+          <label class="filter-checkbox">
+            <input type="checkbox" value="{{ cat.slug }}" {% if cat.slug in selected_categories %}checked{% endif %}> {{ cat.name }}
+          </label>
+          {% empty %}
+          <label class="filter-checkbox"><input type="checkbox" value="skincare"> Skincare</label>
+          <label class="filter-checkbox"><input type="checkbox" value="makeup"> Makeup</label>
+          <label class="filter-checkbox"><input type="checkbox" value="haircare"> Haircare</label>
+          <label class="filter-checkbox"><input type="checkbox" value="fragrance"> Fragrance</label>
+          <label class="filter-checkbox"><input type="checkbox" value="bodycare"> Body Care</label>
+          <label class="filter-checkbox"><input type="checkbox" value="nails"> Nails</label>
+          <label class="filter-checkbox"><input type="checkbox" value="tools"> Tools & Accessories</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <button class="filter-toggle" data-filter="condition">
+          <span>Condition</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="filter-content open" id="filter-condition">
+          <label class="filter-checkbox"><input type="checkbox" value="new"> New with tags</label>
+          <label class="filter-checkbox"><input type="checkbox" value="new-no-tags"> New without tags</label>
+          <label class="filter-checkbox"><input type="checkbox" value="like-new"> Like new</label>
+          <label class="filter-checkbox"><input type="checkbox" value="good"> Good</label>
+          <label class="filter-checkbox"><input type="checkbox" value="fair"> Fair</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <button class="filter-toggle" data-filter="brand">
+          <span>Brand</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="filter-content open" id="filter-brand">
+          {% for brand in brands %}
+          <label class="filter-checkbox">
+            <input type="checkbox" value="{{ brand.slug }}" {% if brand.slug in selected_brands %}checked{% endif %}> {{ brand.name }}
+          </label>
+          {% empty %}
+          <label class="filter-checkbox"><input type="checkbox" value="ordinary"> The Ordinary</label>
+          <label class="filter-checkbox"><input type="checkbox" value="cerave"> CeraVe</label>
+          <label class="filter-checkbox"><input type="checkbox" value="drunk-elephant"> Drunk Elephant</label>
+          <label class="filter-checkbox"><input type="checkbox" value="fenty"> Fenty Beauty</label>
+          <label class="filter-checkbox"><input type="checkbox" value="charlotte-tilbury"> Charlotte Tilbury</label>
+          <label class="filter-checkbox"><input type="checkbox" value="olaplex"> Olaplex</label>
+          <label class="filter-checkbox"><input type="checkbox" value="rare-beauty"> Rare Beauty</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <button class="filter-toggle" data-filter="price">
+          <span>Price</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="filter-content open" id="filter-price">
+          <div class="price-range">
+            <input type="number" placeholder="Min" id="priceMin" min="0" value="{{ request.GET.price_min|default:'' }}">
+            <span>to</span>
+            <input type="number" placeholder="Max" id="priceMax" min="0" value="{{ request.GET.price_max|default:'' }}">
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <button class="filter-toggle" data-filter="shipping">
+          <span>Shipping</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="filter-content open" id="filter-shipping">
+          <label class="filter-checkbox"><input type="checkbox" value="free"> Free shipping</label>
+          <label class="filter-checkbox"><input type="checkbox" value="bundle"> Bundle discount</label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Products Section -->
+    <section class="products-section">
+      <div class="products-header">
+        <div class="results-count">
+          <span id="resultsCount">{{ products_count|default:products|length }}</span> items
+        </div>
+        <div class="sort-container">
+          <label for="sortSelect">Sort by:</label>
+          <select id="sortSelect" class="sort-select">
+            <option value="relevance" {% if sort == 'relevance' %}selected{% endif %}>Relevance</option>
+            <option value="newest"    {% if sort == 'newest' %}selected{% endif %}>Newest first</option>
+            <option value="price-low" {% if sort == 'price-low' %}selected{% endif %}>Price: Low to High</option>
+            <option value="price-high"{% if sort == 'price-high' %}selected{% endif %}>Price: High to Low</option>
+          </select>
+        </div>
+        <button class="filters-toggle-btn" id="filtersToggleBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          Filters
+        </button>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        {% for product in products %}
+        <article class="product-card" data-id="{{ product.parent_asin }}">
+          <div class="product-image">
+            <button class="product-favourite {% if product.parent_asin in user_favourites %}active{% endif %}"
+                    data-id="{{ product.parent_asin }}" aria-label="Add to favourites">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+            <a href="{% url 'product' product.parent_asin %}">
+              <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" loading="lazy">
+            </a>
+          </div>
+          <div class="product-info">
+            <div class="product-price">${{ product.price }}</div>
+            <h3 class="product-title">
+              <a href="{% url 'product' product.parent_asin %}">{{ product.title }}</a>
+            </h3>
+            <div class="product-meta">
+              <span class="product-brand">{{ product.store }}</span>
+            </div>
+          </div>
+        </article>
+        {% empty %}
+        <div class="empty-state">
+          <h3>No products found</h3>
+          <p>Try adjusting your filters or search term.</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="load-more-container">
+        {% if has_next_page %}
+        <a href="?page={{ next_page }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="load-more-btn">Load more</a>
+        {% else %}
+        <button class="load-more-btn" id="loadMoreBtn">Load more</button>
+        {% endif %}
+      </div>
+    </section>
+
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BeautyRec – Inscription</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint:    #09B583;
+      --mint-lt: #E8F8F3;
+      --dark:    #1A1A2E;
+      --gray:    #6B7280;
+      --gray-lt: #F4F4F6;
+      --border:  #E5E7EB;
+      --white:   #FFFFFF;
+      --red:     #EF4444;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-lt);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page {
+      display: flex;
+      width: 100%;
+      max-width: 960px;
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      margin: 24px;
+    }
+
+    .left {
+      flex: 1;
+      background: linear-gradient(135deg, #09B583 0%, #06896A 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 40px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .left::before {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -80px; right: -80px;
+    }
+    .left::after {
+      content: '';
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      bottom: 40px; left: -60px;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+    }
+    .logo span { opacity: 0.7; font-size: 14px; display: block; font-family: 'DM Sans', sans-serif; margin-top: 4px; font-weight: 300; }
+
+    .left-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .left-content p { font-size: 15px; opacity: 0.85; line-height: 1.6; }
+
+    .left-features { display: flex; flex-direction: column; gap: 12px; }
+    .feature { display: flex; align-items: center; gap: 12px; font-size: 14px; opacity: 0.9; }
+    .feature-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.6); flex-shrink: 0; }
+
+    .right {
+      flex: 1;
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .tab.active { color: var(--mint); border-bottom-color: var(--mint); }
+    .tab:hover { color: var(--dark); }
+
+    h1 { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--dark); margin-bottom: 8px; }
+    .subtitle { font-size: 14px; color: var(--gray); margin-bottom: 28px; }
+
+    .row { display: flex; gap: 16px; }
+    .row .field { flex: 1; }
+
+    .field { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 500; color: var(--dark); margin-bottom: 6px; }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--dark);
+      background: var(--white);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus { border-color: var(--mint); }
+    input::placeholder { color: #C4C4C4; }
+
+    .input-error { border-color: var(--red) !important; }
+    .field-error { font-size: 12px; color: var(--red); margin-top: 4px; display: none; }
+    .field-error.show { display: block; }
+
+    .error-banner {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: var(--red);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 20px;
+      margin-top: 4px;
+    }
+    .terms input[type="checkbox"] { accent-color: var(--mint); width: 15px; height: 15px; margin-top: 1px; flex-shrink: 0; }
+    .terms a { color: var(--mint); text-decoration: none; font-weight: 500; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--mint);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover { background: #07A374; }
+    .btn:active { transform: scale(0.99); }
+
+    .switch { text-align: center; font-size: 14px; color: var(--gray); margin-top: 20px; }
+    .switch a { color: var(--mint); font-weight: 500; text-decoration: none; }
+    .switch a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .left { display: none; }
+      .right { padding: 32px 24px; }
+      .page { margin: 0; border-radius: 0; min-height: 100vh; }
+      .row { flex-direction: column; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="left">
+    <div class="logo">BeautyRec<span>Your personal beauty guide</span></div>
+    <div class="left-content">
+      <h2>Join thousands of beauty lovers</h2>
+      <p>Create your account and get recommendations tailored just for you.</p>
+    </div>
+    <div class="left-features">
+      <div class="feature"><div class="feature-dot"></div>Free forever, no credit card</div>
+      <div class="feature"><div class="feature-dot"></div>Personalized from day one</div>
+      <div class="feature"><div class="feature-dot"></div>Save your favourites</div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="tabs">
+      <a href="{% url 'login' %}" class="tab">Sign in</a>
+      <a href="{% url 'register' %}" class="tab active">Register</a>
+    </div>
+
+    <h1>Create account</h1>
+    <p class="subtitle">It only takes a minute</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="error-banner">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'register' %}" id="registerForm">
+      {% csrf_token %}
+      <div class="row">
+        <div class="field">
+          <label for="first_name">First name</label>
+          <input type="text" id="first_name" name="first_name" placeholder="Kenza" required />
+        </div>
+        <div class="field">
+          <label for="last_name">Last name</label>
+          <input type="text" id="last_name" name="last_name" placeholder="Ezzahed" required />
+        </div>
+      </div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Min. 8 characters" required />
+        <div class="field-error" id="pwd-error">Password must be at least 8 characters</div>
+      </div>
+      <div class="field">
+        <label for="password2">Confirm password</label>
+        <input type="password" id="password2" name="password2" placeholder="Repeat your password" required />
+        <div class="field-error" id="pwd2-error">Passwords do not match</div>
+      </div>
+      <div class="terms">
+        <input type="checkbox" id="terms" name="terms" required />
+        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+      <button type="submit" class="btn">Create my account</button>
+    </form>
+
+    <div class="switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></div>
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById('registerForm');
+  const pwd = document.getElementById('password');
+  const pwd2 = document.getElementById('password2');
+
+  form.addEventListener('submit', function(e) {
+    let valid = true;
+
+    if (pwd.value.length < 8) {
+      pwd.classList.add('input-error');
+      document.getElementById('pwd-error').classList.add('show');
+      valid = false;
+    } else {
+      pwd.classList.remove('input-error');
+      document.getElementById('pwd-error').classList.remove('show');
+    }
+
+    if (pwd.value !== pwd2.value) {
+      pwd2.classList.add('input-error');
+      document.getElementById('pwd2-error').classList.add('show');
+      valid = false;
+    } else {
+      pwd2.classList.remove('input-error');
+      document.getElementById('pwd2-error').classList.remove('show');
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+</body>
+</html>
