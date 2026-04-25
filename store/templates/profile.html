@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - GlowMarket{% endblock %}
+{% block page_name %}profile{% endblock %}
+{% block nav_profile %}active{% endblock %}
+
+{% block content %}
+<main class="page-content" id="profilePage">
+  <div class="profile-container">
+
+    <!-- Profile Banner -->
+    <div class="profile-banner">
+      <div class="profile-header-content">
+        <div class="profile-avatar-large">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"
+               alt="{{ user.get_full_name|default:user.username }}">
+        </div>
+        <h1 class="profile-name">{{ user.get_full_name|default:user.username }}</h1>
+        <p class="profile-member-since">Member since {{ user.date_joined|date:"F Y" }}</p>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <span class="stat-number">{{ favourites_count }}</span>
+            <span class="stat-label">Saved</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ reviews_count }}</span>
+            <span class="stat-label">Reviews</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ recommended_products|length }}</span>
+            <span class="stat-label">Recommendations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Tabs -->
+    <div class="profile-tabs">
+      <button class="profile-tab active" data-tab="recommended">Recommended</button>
+      <button class="profile-tab" data-tab="wishlist">Wishlist</button>
+      <button class="profile-tab" data-tab="history">History</button>
+      <button class="profile-tab" data-tab="reviews">Reviews</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="profile-tab-content">
+
+      <!-- Recommended Tab -->
+      <div class="tab-panel active" id="tab-recommended">
+        <h2 class="tab-section-title">Picked for you today</h2>
+        <div class="products-grid" id="recommendedGrid">
+          {% for product in recommended_products %}
+          <article class="product-card" data-id="{{ product.parent_asin }}">
+            <div class="product-image">
+              <a href="{% url 'product' product.parent_asin %}">
+                <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" loading="lazy">
+              </a>
+            </div>
+            <div class="product-info">
+              <div class="product-price">${{ product.price }}</div>
+              <h3 class="product-title">
+                <a href="{% url 'product' product.parent_asin %}">{{ product.title }}</a>
+              </h3>
+              <div class="product-meta">
+                <span class="product-brand">{{ product.store }}</span>
+                <span class="product-condition">New</span>
+              </div>
+            </div>
+          </article>
+          {% empty %}
+          <p>No recommendations available yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Wishlist Tab -->
+      <div class="tab-panel" id="tab-wishlist">
+        {% if wishlist_products %}
+        <div class="wishlist-grid" id="wishlistGrid">
+          {% for product in wishlist_products %}
+          <article class="product-card wishlist-card" data-id="{{ product.parent_asin }}">
+            <div class="product-image">
+              <form method="post" action="{% url 'toggle_favourite' product.parent_asin %}">
+                {% csrf_token %}
+                <button type="submit" class="wishlist-remove product-favourite active" aria-label="Remove from wishlist">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+              </form>
+              <a href="{% url 'product' product.parent_asin %}">
+                <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" loading="lazy">
+              </a>
+            </div>
+            <div class="product-info">
+              <div class="product-price">${{ product.price }}</div>
+              <h3 class="product-title">
+                <a href="{% url 'product' product.parent_asin %}">{{ product.title }}</a>
+              </h3>
+              <div class="product-meta">
+                <span class="product-brand">{{ product.store }}</span>
+                <span class="product-condition">New</span>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state profile-empty" id="emptyWishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <h3>No saved products yet</h3>
+          <p>Start exploring and save your favorites!</p>
+          <a href="{% url 'home' %}" class="browse-btn">Explore products</a>
+        </div>
+        {% endif %}
+      </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- History Tab -->
+      <div class="tab-panel" id="tab-history">
+        {% if viewing_history %}
+        <div class="history-list" id="historyList">
+          {% for entry in viewing_history %}
+          <div class="history-item">
+            <div class="history-image">
+              <a href="{% url 'product' entry.parent_asin.parent_asin %}">
+                <img src="{{ entry.parent_asin.highres_image_url }}" alt="{{ entry.parent_asin.title }}">
+              </a>
+            </div>
+            <div class="history-details">
+              <h3 class="history-title">
+                <a href="{% url 'product' entry.parent_asin.parent_asin %}">{{ entry.parent_asin.title }}</a>
+              </h3>
+              <p class="history-date">Viewed: {{ entry.review_date|date:"M j, Y" }}</p>
+            </div>
+            {% if entry.rating %}
+            <div class="history-rating">
+              {% for i in "12345" %}
+              {% if forloop.counter <= entry.rating %}
+              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              {% else %}
+              <svg viewBox="0 0 24 24" class="empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state profile-empty" id="emptyHistory">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <h3>No viewing history yet</h3>
+          <p>Products you view will appear here.</p>
+          <a href="{% url 'home' %}" class="browse-btn">Start browsing</a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Reviews Tab -->
+      <div class="tab-panel" id="tab-reviews">
+        {% if user_reviews %}
+        <div class="reviews-list" id="reviewsList">
+          {% for review in user_reviews %}
+          <div class="review-card">
+            <div class="review-product-image">
+              <a href="{% url 'product' review.parent_asin.parent_asin %}">
+                <img src="{{ review.parent_asin.highres_image_url }}" alt="{{ review.parent_asin.title }}">
+              </a>
+            </div>
+            <div class="review-content">
+              <h3 class="review-product-name">{{ review.parent_asin.title }}</h3>
+              <p class="review-text">{{ review.text }}</p>
+              <span class="review-date">{{ review.parent_asin.parent_asin|date:"F j, Y" }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state profile-empty" id="emptyReviews">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <h3>No reviews yet</h3>
+          <p>Share your thoughts on products you have tried!</p>
+          <a href="{% url 'home' %}" class="browse-btn">Find products to review</a>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Tab switching
+  document.querySelectorAll('.profile-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab)?.classList.add('active');
+    });
+  });
+</script>
+{% endblock %}

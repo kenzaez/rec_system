@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "./store"
+    ],
+    "python.autoComplete.extraPaths": [
+        "./store"
+    ]
+}

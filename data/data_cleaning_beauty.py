@@ -155,7 +155,6 @@ def clean_reviews(df: pd.DataFrame) -> pd.DataFrame:
         df["text"] = df["text"].apply(clean_text)
         df["title_review"] = df.get("title", pd.Series(dtype=str)).apply(clean_text)
 
-        # Filtrage par longueur (trop court = spam/inutile, trop long = outlier)
         before = len(df)
         df["text_len"] = df["text"].str.len().fillna(0)
         df = df[

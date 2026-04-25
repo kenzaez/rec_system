@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Favourites - GlowMarket{% endblock %}
+{% block page_name %}favourites{% endblock %}
+{% block nav_favourites %}active{% endblock %}
+
+{% block content %}
+<main class="page-content" id="favouritesPage">
+  <div class="page-container">
+
+    <div class="page-header">
+      <h1>My Favourites</h1>
+      <p>{{ favourite_products|length }} item{{ favourite_products|length|pluralize }} saved</p>
+    </div>
+
+    {% if favourite_products %}
+    <div class="favourites-grid" id="favouritesGrid">
+      {% for product in favourite_products %}
+      <article class="product-card" data-id="{{ product.parent_asin }}">
+        <div class="product-image">
+          <form method="post" action="{% url 'toggle_favourite' product.parent_asin %}">
+            {% csrf_token %}
+            <button type="submit" class="product-favourite active" data-id="{{ product.parent_asin }}" aria-label="Remove from favourites">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+          </form>
+
+          <a href="{% url 'product' product.parent_asin %}">
+            <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" loading="lazy">
+          </a>
+        </div>
+        <div class="product-info">
+          <div class="product-price">${{ product.price }}</div>
+          <h3 class="product-title">
+            <a href="{% url 'product' product.parent_asin %}">{{ product.title }}</a>
+          </h3>
+          <div class="product-meta">
+            <span class="product-brand">{{ product.store }}</span>
+            <span class="product-condition">New</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="empty-state" id="emptyFavourites">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+      <h3>No favourites yet</h3>
+      <p>Items you love will appear here. Start exploring and save your favorites!</p>
+      <a href="{% url 'home' %}" class="browse-btn">Browse products</a>
+    </div>
+    {% endif %}
+
+  </div>
+</main>
+{% endblock %}
