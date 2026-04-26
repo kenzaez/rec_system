@@ -1,31 +1,47 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BeautyRec – Get Started</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+  <link rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --mint:    #09B583;
+      --mint: #09B583;
+      --mint-dk: #07A374;
       --mint-lt: #E8F8F3;
-      --dark:    #1A1A2E;
-      --gray:    #6B7280;
+      --dark: #1A1A2E;
+      --gray: #6B7280;
       --gray-lt: #F4F4F6;
-      --border:  #E5E7EB;
-      --white:   #FFFFFF;
+      --border: #E5E7EB;
+      --white: #FFFFFF;
+      --red: #EF4444;
     }
 
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--gray-lt);
       min-height: 100vh;
+      padding-bottom: 100px;
     }
 
-    /* NAVBAR */
+    /* NAV */
     nav {
       background: var(--white);
       border-bottom: 1px solid var(--border);
@@ -33,146 +49,207 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--dark); }
-    .logo span { color: var(--mint); }
-    .nav-skip { font-size: 14px; color: var(--gray); text-decoration: none; }
-    .nav-skip:hover { color: var(--dark); }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--dark);
+    }
+
+    .logo span {
+      color: var(--mint);
+    }
+
+    .nav-skip {
+      font-size: 14px;
+      color: var(--gray);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-skip:hover {
+      color: var(--dark);
+    }
 
     /* HEADER */
     .header {
       text-align: center;
-      padding: 56px 24px 32px;
+      padding: 52px 24px 36px;
     }
-    .step-badge {
+
+    .step-pill {
       display: inline-block;
       background: var(--mint-lt);
       color: var(--mint);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      padding: 6px 14px;
+      padding: 5px 14px;
       border-radius: 20px;
-      margin-bottom: 20px;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
+      margin-bottom: 20px;
     }
+
     .header h1 {
       font-family: 'DM Serif Display', serif;
-      font-size: 36px;
+      font-size: 34px;
       color: var(--dark);
       margin-bottom: 12px;
+      line-height: 1.2;
     }
+
     .header p {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--gray);
-      max-width: 480px;
+      max-width: 440px;
       margin: 0 auto;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     /* PROGRESS */
     .progress-wrap {
-      max-width: 480px;
-      margin: 0 auto 40px;
+      max-width: 440px;
+      margin: 0 auto 44px;
       padding: 0 24px;
     }
+
     .progress-label {
       display: flex;
       justify-content: space-between;
       font-size: 13px;
       color: var(--gray);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
-    .progress-label span { color: var(--mint); font-weight: 600; }
+
+    .progress-label strong {
+      color: var(--dark);
+    }
+
     .progress-bar {
-      height: 6px;
+      height: 5px;
       background: var(--border);
       border-radius: 10px;
       overflow: hidden;
     }
+
     .progress-fill {
       height: 100%;
       background: var(--mint);
       border-radius: 10px;
-      transition: width 0.4s ease;
+      transition: width 0.35s ease;
       width: 0%;
     }
 
-    /* PRODUCTS GRID */
-    .container { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+    /* GRID */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
     }
 
+    /* CATEGORY CARD */
     .card {
       background: var(--white);
       border: 2px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
+      border-radius: 16px;
+      padding: 28px 20px 24px;
       cursor: pointer;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      user-select: none;
+      position: relative;
     }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
-    .card.rated { border-color: var(--mint); }
 
-    .card-img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      background: var(--gray-lt);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
+    .card:hover {
+      border-color: #B2E8D8;
+      box-shadow: 0 4px 16px rgba(9, 181, 131, 0.1);
+      transform: translateY(-2px);
     }
-    .card-img img { width: 100%; height: 100%; object-fit: cover; }
 
-    .card-body { padding: 12px; }
-    .card-title {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--dark);
-      margin-bottom: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      line-height: 1.4;
+    .card.selected {
+      border-color: var(--mint);
+      background: var(--mint-lt);
     }
-    .card-store { font-size: 11px; color: var(--gray); margin-bottom: 10px; }
 
-    .stars {
-      display: flex;
-      gap: 3px;
+    .card.selected .card-icon {
+      color: var(--mint);
     }
-    .star {
-      font-size: 18px;
-      cursor: pointer;
-      color: #D1D5DB;
-      transition: color 0.15s, transform 0.1s;
-      line-height: 1;
-    }
-    .star:hover, .star.active { color: #FBBF24; }
-    .star:active { transform: scale(1.3); }
 
-    .card-rated-badge {
+    .card.selected .card-name {
+      color: var(--mint);
+    }
+
+    .check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--mint);
       display: none;
       align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: var(--mint);
-      font-weight: 600;
-      margin-top: 6px;
+      justify-content: center;
     }
-    .card-rated-badge.show { display: flex; }
 
-    /* FOOTER CTA */
+    .card.selected .check {
+      display: flex;
+    }
+
+    .check i {
+      font-size: 11px;
+      color: white;
+    }
+
+    .card-icon {
+      font-size: 32px;
+      color: #9CA3AF;
+      margin-bottom: 14px;
+      transition: color 0.2s;
+      display: block;
+    }
+
+    .card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 5px;
+      transition: color 0.2s;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .card.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .card.disabled.selected {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* BOTTOM BAR */
     .cta-bar {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       background: var(--white);
       border-top: 1px solid var(--border);
       padding: 16px 40px;
@@ -180,11 +257,20 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+      z-index: 99;
     }
-    .cta-info { font-size: 14px; color: var(--gray); }
-    .cta-info strong { color: var(--dark); }
+
+    .cta-info {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .cta-info strong {
+      color: var(--dark);
+    }
+
     .btn {
-      padding: 12px 32px;
+      padding: 13px 36px;
       background: var(--mint);
       color: white;
       border: none;
@@ -194,132 +280,200 @@
       font-family: 'DM Sans', sans-serif;
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn:not(:disabled):hover { background: #07A374; }
+
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .btn:not(:disabled):hover {
+      background: var(--mint-dk);
+    }
 
     @media (max-width: 600px) {
-      .header h1 { font-size: 26px; }
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .cta-bar { padding: 12px 20px; }
-      nav { padding: 14px 20px; }
+      nav {
+        padding: 14px 20px;
+      }
+
+      .header {
+        padding: 36px 20px 28px;
+      }
+
+      .header h1 {
+        font-size: 26px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cta-bar {
+        padding: 12px 20px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        justify-content: center;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<nav>
-  <div class="logo">Beauty<span>Rec</span></div>
-  <a href="{% url 'index' %}" class="nav-skip">Skip for now →</a>
-</nav>
+  <nav>
+    <div class="logo"><span></span></div>
+    <a href="{% url 'index' %}" class="nav-skip">Skip for now</a>
+  </nav>
 
-<div class="header">
-  <div class="step-badge">Step 1 of 1</div>
-  <h1>What do you love?</h1>
-  <p>Rate a few products so we can personalize your recommendations. The more you rate, the better we get.</p>
-</div>
-
-<div class="progress-wrap">
-  <div class="progress-label">
-    <span id="rated-count">0</span> rated &nbsp;·&nbsp; rate at least 3 to continue
-    <span id="pct">0%</span>
+  <div class="header">
+    <div class="step-pill">Getting started</div>
+    <h1>What are you interested in?</h1>
+    <p>Pick up to 5 categories and we will show you the best products for your taste right away.</p>
   </div>
-  <div class="progress-bar">
-    <div class="progress-fill" id="progress-fill"></div>
-  </div>
-</div>
 
-<div class="container">
-  <div class="grid" id="products-grid">
-    {% for product in products %}
-    <div class="card" id="card-{{ forloop.counter }}" data-asin="{{ product.parent_asin }}">
-      <div class="card-img">
-        {% if product.highres_image_url %}
-          <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" onerror="this.parentElement.innerHTML='💄'"/>
-        {% else %}
-          💄
-        {% endif %}
-      </div>
-      <div class="card-body">
-        <div class="card-title">{{ product.title|default:"Beauty Product"|truncatechars:50 }}</div>
-        <div class="card-store">{{ product.store|default:"" }}</div>
-        <div class="stars" data-card="{{ forloop.counter }}" data-asin="{{ product.parent_asin }}">
-          <span class="star" data-val="1">★</span>
-          <span class="star" data-val="2">★</span>
-          <span class="star" data-val="3">★</span>
-          <span class="star" data-val="4">★</span>
-          <span class="star" data-val="5">★</span>
-        </div>
-        <div class="card-rated-badge" id="badge-{{ forloop.counter }}">✓ Rated</div>
-      </div>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span><strong id="count">0</strong> / 5 selected</span>
+      <span>Select at least 1</span>
     </div>
-    {% endfor %}
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
   </div>
-</div>
 
-<div class="cta-bar">
-  <div class="cta-info">
-    Rate at least <strong>3 products</strong> to unlock your recommendations
+  <div class="container">
+    <div class="grid">
+
+      <div class="card" data-value="Skin Care">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-face-smile-beam card-icon"></i>
+        <div class="card-name">Skin Care</div>
+        <div class="card-desc">Serums, moisturizers, cleansers</div>
+      </div>
+
+      <div class="card" data-value="Makeup">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-paint-brush card-icon"></i>
+        <div class="card-name">Makeup</div>
+        <div class="card-desc">Foundation, lipstick, eyeshadow</div>
+      </div>
+
+      <div class="card" data-value="Hair Care">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-wind card-icon"></i>
+        <div class="card-name">Hair Care</div>
+        <div class="card-desc">Shampoo, masks, treatments</div>
+      </div>
+
+      <div class="card" data-value="Fragrance">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-flower card-icon"></i>
+        <div class="card-name">Fragrance</div>
+        <div class="card-desc">Perfumes, body mists, sprays</div>
+      </div>
+
+      <div class="card" data-value="Body Care">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-hand card-icon"></i>
+        <div class="card-name">Body Care</div>
+        <div class="card-desc">Lotions, scrubs, oils</div>
+      </div>
+
+      <div class="card" data-value="Nails">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-polish card-icon"></i>
+        <div class="card-name">Nails</div>
+        <div class="card-desc">Polish, treatments, tools</div>
+      </div>
+
+      <div class="card" data-value="Tools & Accessories">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-settings card-icon"></i>
+        <div class="card-name">Tools</div>
+        <div class="card-desc">Brushes, devices, accessories</div>
+      </div>
+
+      <div class="card" data-value="Sun Care">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-sun card-icon"></i>
+        <div class="card-name">Sun Care</div>
+        <div class="card-desc">SPF, after-sun, self-tanning</div>
+      </div>
+
+      <div class="card" data-value="Men's Grooming">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-razor-barber card-icon"></i>
+        <div class="card-name">Men's Grooming</div>
+        <div class="card-desc">Shaving, beard, skincare</div>
+      </div>
+
+      <div class="card" data-value="Wellness">
+        <div class="check"><i class="fi fi-sr-check"></i></div>
+        <i class="fi fi-rr-heart card-icon"></i>
+        <div class="card-name">Wellness</div>
+        <div class="card-desc">Vitamins, supplements, spa</div>
+      </div>
+
+    </div>
   </div>
-  <form method="POST" action="{% url 'onboarding' %}" id="onboarding-form">
-    {% csrf_token %}
-    <input type="hidden" name="ratings" id="ratings-input" value="{}"/>
-    <button type="submit" class="btn" id="continue-btn" disabled>Continue →</button>
-  </form>
-</div>
 
-<script>
-  const ratings = {};
-  const MIN_RATINGS = 3;
-  const TOTAL = {{ products|length }};
+  <div class="cta-bar">
+    <div class="cta-info">Select at least <strong>1 category</strong> to continue</div>
+    <form method="POST" action="{% url 'onboarding' %}" id="onboarding-form">
+      {% csrf_token %}
+      <input type="hidden" name="categories" id="categories-input" value="" />
+      <button type="submit" class="btn" id="continue-btn" disabled>
+        Continue
+        <i class="fi fi-rr-arrow-right"></i>
+      </button>
+    </form>
+  </div>
 
-  function updateProgress() {
-    const count = Object.keys(ratings).length;
-    const pct = Math.min(Math.round((count / MIN_RATINGS) * 100), 100);
-    document.getElementById('rated-count').textContent = count;
-    document.getElementById('pct').textContent = pct + '%';
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('continue-btn').disabled = count < MIN_RATINGS;
-  }
+  <script>
+    const MAX = 5;
+    const selected = new Set();
 
-  document.querySelectorAll('.stars').forEach(function(starsEl) {
-    const stars = starsEl.querySelectorAll('.star');
-    const asin = starsEl.dataset.asin;
-    const cardId = starsEl.dataset.card;
+    function update() {
+      const count = selected.size;
+      document.getElementById('count').textContent = count;
+      document.getElementById('progress-fill').style.width = (count / MAX * 100) + '%';
+      document.getElementById('continue-btn').disabled = count < 1;
+      document.getElementById('categories-input').value = JSON.stringify([...selected]);
 
-    stars.forEach(function(star) {
-      star.addEventListener('mouseover', function() {
-        const val = parseInt(star.dataset.val);
-        stars.forEach(function(s) {
-          s.style.color = parseInt(s.dataset.val) <= val ? '#FBBF24' : '#D1D5DB';
-        });
+      document.querySelectorAll('.card').forEach(function (card) {
+        if (!card.classList.contains('selected')) {
+          if (count >= MAX) {
+            card.classList.add('disabled');
+          } else {
+            card.classList.remove('disabled');
+          }
+        }
       });
+    }
 
-      star.addEventListener('mouseleave', function() {
-        const current = ratings[asin] || 0;
-        stars.forEach(function(s) {
-          s.style.color = parseInt(s.dataset.val) <= current ? '#FBBF24' : '#D1D5DB';
-        });
-      });
-
-      star.addEventListener('click', function() {
-        const val = parseInt(star.dataset.val);
-        ratings[asin] = val;
-
-        stars.forEach(function(s) {
-          s.style.color = parseInt(s.dataset.val) <= val ? '#FBBF24' : '#D1D5DB';
-          s.classList.toggle('active', parseInt(s.dataset.val) <= val);
-        });
-
-        document.getElementById('card-' + cardId).classList.add('rated');
-        document.getElementById('badge-' + cardId).classList.add('show');
-        document.getElementById('ratings-input').value = JSON.stringify(ratings);
-        updateProgress();
+    document.querySelectorAll('.card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        const val = card.dataset.value;
+        if (card.classList.contains('selected')) {
+          card.classList.remove('selected');
+          selected.delete(val);
+        } else {
+          if (selected.size >= MAX) return;
+          card.classList.add('selected');
+          selected.add(val);
+        }
+        update();
       });
     });
-  });
 
-  updateProgress();
-</script>
+    update();
+  </script>
 </body>
+
 </html>
