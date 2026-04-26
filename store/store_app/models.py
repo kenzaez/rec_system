@@ -72,6 +72,63 @@ class Users(models.Model):
 
 class AppUser(AbstractUser):
     dataset_user_id = models.CharField(max_length=50, blank=True, null=True)
-    
+    preferred_categories = models.JSONField(default=list, blank=True)
+
     class Meta:
         db_table = 'app_users'
+
+
+class History(models.Model):
+    """Browsing history — max 20 entries per user, no duplicates (update_or_create)."""
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='history')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, db_column='product_asin')
+    viewed_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'history'
+        unique_together = ('user', 'product')
+        ordering = ['-viewed_at']
+
+    def __str__(self):
+        return f"{self.user} viewed {self.product_id} at {self.viewed_at}"
+
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+    ]
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='orders')
+    created_at = models.DateTimeField(auto_now_add=True)
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=10)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    shipping = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='confirmed')
+
+    class Meta:
+        db_table = 'orders'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Order #{self.pk} by {self.user}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, db_column='product_asin')
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        db_table = 'order_items'
+
+    def __str__(self):
+        return f"{self.quantity}x {self.product_id} in Order #{self.order_id}"

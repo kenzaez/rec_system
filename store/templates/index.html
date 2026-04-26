@@ -7,14 +7,14 @@
 {% block categories_bar %}
 <nav class="categories-bar" id="categoriesBar">
   <div class="categories-container">
-    <button class="category-btn {% if not request.GET.category or request.GET.category == 'all' %}active{% endif %}" data-category="all">All</button>
-    <button class="category-btn {% if request.GET.category == 'skincare' %}active{% endif %}" data-category="skincare">Skincare</button>
-    <button class="category-btn {% if request.GET.category == 'makeup' %}active{% endif %}" data-category="makeup">Makeup</button>
-    <button class="category-btn {% if request.GET.category == 'haircare' %}active{% endif %}" data-category="haircare">Haircare</button>
-    <button class="category-btn {% if request.GET.category == 'fragrance' %}active{% endif %}" data-category="fragrance">Fragrance</button>
-    <button class="category-btn {% if request.GET.category == 'bodycare' %}active{% endif %}" data-category="bodycare">Body Care</button>
-    <button class="category-btn {% if request.GET.category == 'nails' %}active{% endif %}" data-category="nails">Nails</button>
-    <button class="category-btn {% if request.GET.category == 'tools' %}active{% endif %}" data-category="tools">Tools</button>
+    <a href="{% url 'home' %}" class="category-btn {% if not category_filter or category_filter == 'all' %}active{% endif %}">All</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Skin+Care" class="category-btn {% if category_filter == 'Skin Care' %}active{% endif %}">Skincare</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Makeup" class="category-btn {% if category_filter == 'Makeup' %}active{% endif %}">Makeup</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Hair+Care" class="category-btn {% if category_filter == 'Hair Care' %}active{% endif %}">Haircare</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Fragrance" class="category-btn {% if category_filter == 'Fragrance' %}active{% endif %}">Fragrance</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Body+Care" class="category-btn {% if category_filter == 'Body Care' %}active{% endif %}">Body Care</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Nails" class="category-btn {% if category_filter == 'Nails' %}active{% endif %}">Nails</a>
+    <a href="{% url 'home' %}?q={{ search_query|urlencode }}&category=Tools" class="category-btn {% if category_filter == 'Tools' %}active{% endif %}">Tools</a>
   </div>
 </nav>
 {% endblock %}
@@ -27,106 +27,88 @@
     <aside class="filters-sidebar" id="filtersSidebar">
       <div class="filters-header">
         <h2>Filters</h2>
-        <button class="clear-filters-btn" id="clearFiltersBtn">Clear all</button>
+        <a href="{% url 'home' %}" class="clear-filters-btn">Clear all</a>
       </div>
 
-      <div class="filter-section">
-        <button class="filter-toggle" data-filter="categories">
-          <span>Categories</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="filter-content open" id="filter-categories">
-          {% for cat in categories %}
-          <label class="filter-checkbox">
-            <input type="checkbox" value="{{ cat.slug }}" {% if cat.slug in selected_categories %}checked{% endif %}> {{ cat.name }}
-          </label>
-          {% empty %}
-          <label class="filter-checkbox"><input type="checkbox" value="skincare"> Skincare</label>
-          <label class="filter-checkbox"><input type="checkbox" value="makeup"> Makeup</label>
-          <label class="filter-checkbox"><input type="checkbox" value="haircare"> Haircare</label>
-          <label class="filter-checkbox"><input type="checkbox" value="fragrance"> Fragrance</label>
-          <label class="filter-checkbox"><input type="checkbox" value="bodycare"> Body Care</label>
-          <label class="filter-checkbox"><input type="checkbox" value="nails"> Nails</label>
-          <label class="filter-checkbox"><input type="checkbox" value="tools"> Tools & Accessories</label>
-          {% endfor %}
-        </div>
-      </div>
+      <form method="GET" action="{% url 'home' %}" id="filterForm">
+        {% if search_query %}
+        <input type="hidden" name="q" value="{{ search_query }}">
+        {% endif %}
 
-      <div class="filter-section">
-        <button class="filter-toggle" data-filter="condition">
-          <span>Condition</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="filter-content open" id="filter-condition">
-          <label class="filter-checkbox"><input type="checkbox" value="new"> New with tags</label>
-          <label class="filter-checkbox"><input type="checkbox" value="new-no-tags"> New without tags</label>
-          <label class="filter-checkbox"><input type="checkbox" value="like-new"> Like new</label>
-          <label class="filter-checkbox"><input type="checkbox" value="good"> Good</label>
-          <label class="filter-checkbox"><input type="checkbox" value="fair"> Fair</label>
-        </div>
-      </div>
-
-      <div class="filter-section">
-        <button class="filter-toggle" data-filter="brand">
-          <span>Brand</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="filter-content open" id="filter-brand">
-          {% for brand in brands %}
-          <label class="filter-checkbox">
-            <input type="checkbox" value="{{ brand.slug }}" {% if brand.slug in selected_brands %}checked{% endif %}> {{ brand.name }}
-          </label>
-          {% empty %}
-          <label class="filter-checkbox"><input type="checkbox" value="ordinary"> The Ordinary</label>
-          <label class="filter-checkbox"><input type="checkbox" value="cerave"> CeraVe</label>
-          <label class="filter-checkbox"><input type="checkbox" value="drunk-elephant"> Drunk Elephant</label>
-          <label class="filter-checkbox"><input type="checkbox" value="fenty"> Fenty Beauty</label>
-          <label class="filter-checkbox"><input type="checkbox" value="charlotte-tilbury"> Charlotte Tilbury</label>
-          <label class="filter-checkbox"><input type="checkbox" value="olaplex"> Olaplex</label>
-          <label class="filter-checkbox"><input type="checkbox" value="rare-beauty"> Rare Beauty</label>
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="filter-section">
-        <button class="filter-toggle" data-filter="price">
-          <span>Price</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="filter-content open" id="filter-price">
-          <div class="price-range">
-            <input type="number" placeholder="Min" id="priceMin" min="0" value="{{ request.GET.price_min|default:'' }}">
-            <span>to</span>
-            <input type="number" placeholder="Max" id="priceMax" min="0" value="{{ request.GET.price_max|default:'' }}">
+        <div class="filter-section">
+          <button type="button" class="filter-toggle" data-filter="categories">
+            <span>Categories</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="filter-content open" id="filter-categories">
+            <label class="filter-checkbox"><input type="checkbox" value="skincare"> Skincare</label>
+            <label class="filter-checkbox"><input type="checkbox" value="makeup"> Makeup</label>
+            <label class="filter-checkbox"><input type="checkbox" value="haircare"> Haircare</label>
+            <label class="filter-checkbox"><input type="checkbox" value="fragrance"> Fragrance</label>
+            <label class="filter-checkbox"><input type="checkbox" value="bodycare"> Body Care</label>
+            <label class="filter-checkbox"><input type="checkbox" value="nails"> Nails</label>
+            <label class="filter-checkbox"><input type="checkbox" value="tools"> Tools & Accessories</label>
           </div>
         </div>
-      </div>
 
-      <div class="filter-section">
-        <button class="filter-toggle" data-filter="shipping">
-          <span>Shipping</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="filter-content open" id="filter-shipping">
-          <label class="filter-checkbox"><input type="checkbox" value="free"> Free shipping</label>
-          <label class="filter-checkbox"><input type="checkbox" value="bundle"> Bundle discount</label>
+        <div class="filter-section">
+          <button type="button" class="filter-toggle" data-filter="rating">
+            <span>Minimum Rating</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="filter-content open" id="filter-rating">
+            <select name="min_rating" class="sort-select" style="width:100%">
+              <option value="">Any rating</option>
+              <option value="4" {% if min_rating == '4' %}selected{% endif %}>4+ stars</option>
+              <option value="3" {% if min_rating == '3' %}selected{% endif %}>3+ stars</option>
+              <option value="2" {% if min_rating == '2' %}selected{% endif %}>2+ stars</option>
+            </select>
+          </div>
         </div>
-      </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-toggle" data-filter="price">
+            <span>Price</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="filter-content open" id="filter-price">
+            <div class="price-range">
+              <input type="number" placeholder="Min" id="priceMin" min="0" value="{{ request.GET.price_min|default:'' }}">
+              <span>to</span>
+              <input type="number" placeholder="Max" id="priceMax" min="0" value="{{ request.GET.price_max|default:'' }}">
+            </div>
+          </div>
+        </div>
+
+        {% if is_search %}
+        <button type="submit" class="load-more-btn" style="width:100%; margin-top:1rem;">Apply Filters</button>
+        {% endif %}
+      </form>
     </aside>
 
     <!-- Products Section -->
     <section class="products-section">
       <div class="products-header">
         <div class="results-count">
-          <span id="resultsCount">{{ products_count|default:products|length }}</span> items
+          {% if is_search %}
+            <span id="resultsCount">{{ products_count }}</span> results for "<strong>{{ search_query }}</strong>"
+          {% else %}
+            <span class="reco-section-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;vertical-align:middle;">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Recommended for you
+            </span>
+          {% endif %}
         </div>
         <div class="sort-container">
           <label for="sortSelect">Sort by:</label>
-          <select id="sortSelect" class="sort-select">
-            <option value="relevance" {% if sort == 'relevance' %}selected{% endif %}>Relevance</option>
-            <option value="newest"    {% if sort == 'newest' %}selected{% endif %}>Newest first</option>
-            <option value="price-low" {% if sort == 'price-low' %}selected{% endif %}>Price: Low to High</option>
-            <option value="price-high"{% if sort == 'price-high' %}selected{% endif %}>Price: High to Low</option>
+          <select id="sortSelect" class="sort-select" onchange="applySort(this.value)">
+            <option value="relevance" {% if sort_by == 'relevance' %}selected{% endif %}>Relevance</option>
+            <option value="top_rated" {% if sort_by == 'top_rated' %}selected{% endif %}>Top Rated</option>
+            <option value="most_reviewed" {% if sort_by == 'most_reviewed' %}selected{% endif %}>Most Reviewed</option>
+            <option value="price-low" {% if sort_by == 'price-low' %}selected{% endif %}>Price: Low to High</option>
+            <option value="price-high" {% if sort_by == 'price-high' %}selected{% endif %}>Price: High to Low</option>
           </select>
         </div>
         <button class="filters-toggle-btn" id="filtersToggleBtn">
@@ -162,7 +144,40 @@
             </h3>
             <div class="product-meta">
               <span class="product-brand">{{ product.store }}</span>
+              {% if product.average_rating %}
+              <span class="product-rating-stars">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px;color:#f59e0b;">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                {{ product.average_rating|floatformat:1 }}
+              </span>
+              {% endif %}
             </div>
+            {% if rec_map %}
+              {% with rec=rec_map|default_if_none:"" %}
+                {% for asin, data in rec_map.items %}
+                  {% if asin == product.parent_asin %}
+                    <div class="reco-badge reco-badge--{{ data.method }}">
+                      {% if data.method == 'svd' %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                      {% elif data.method == 'history' %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                      {% elif data.method == 'cold_start' %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                      {% endif %}
+                      {{ data.explanation }}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endwith %}
+            {% endif %}
           </div>
         </article>
         {% empty %}
@@ -175,13 +190,21 @@
 
       <div class="load-more-container">
         {% if has_next_page %}
-        <a href="?page={{ next_page }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" class="load-more-btn">Load more</a>
-        {% else %}
-        <button class="load-more-btn" id="loadMoreBtn">Load more</button>
+        <a href="?page={{ next_page }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if category_filter %}&category={{ category_filter|urlencode }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="load-more-btn">Load more</a>
         {% endif %}
       </div>
     </section>
 
   </div>
 </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function applySort(value) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort', value);
+    window.location.href = url.toString();
+  }
+</script>
 {% endblock %}

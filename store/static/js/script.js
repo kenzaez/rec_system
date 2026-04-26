@@ -1,278 +1,278 @@
-// Sample product data
-const products = [
-  {
-    id: 1,
-    title: "The Ordinary Niacinamide 10% + Zinc 1%",
-    brand: "The Ordinary",
-    category: "skincare",
-    price: 8.50,
-    originalPrice: 12.00,
-    condition: "New",
-    images: [
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=500&fit=crop"
-    ],
-    description: "Brand new, sealed. This serum helps reduce the appearance of blemishes and congestion. Perfect for oily skin types.",
-    seller: { name: "SarahBeauty", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", rating: 4.9, reviews: 127 },
-    shipping: "Free",
-    badge: "New"
-  },
-  {
-    id: 2,
-    title: "Charlotte Tilbury Pillow Talk Lipstick",
-    brand: "Charlotte Tilbury",
-    category: "makeup",
-    price: 22.00,
-    originalPrice: 34.00,
-    condition: "Like new",
-    images: [
-      "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400&h=500&fit=crop"
-    ],
-    description: "Swatched once, basically new. The iconic Pillow Talk shade that suits everyone. Comes with original box.",
-    seller: { name: "MakeupLover99", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop", rating: 4.8, reviews: 89 },
-    shipping: "$3.99",
-    badge: null
-  },
-  {
-    id: 3,
-    title: "Drunk Elephant C-Firma Day Serum",
-    brand: "Drunk Elephant",
-    category: "skincare",
-    price: 45.00,
-    originalPrice: 80.00,
-    condition: "Good",
-    images: [
-      "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=500&fit=crop"
-    ],
-    description: "About 70% remaining. This vitamin C serum is amazing for brightening. Stored in fridge to maintain potency.",
-    seller: { name: "SkincareJunkie", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop", rating: 4.7, reviews: 203 },
-    shipping: "$4.99",
-    badge: null
-  },
-  {
-    id: 4,
-    title: "Olaplex No. 3 Hair Perfector",
-    brand: "Olaplex",
-    category: "haircare",
-    price: 18.00,
-    originalPrice: 30.00,
-    condition: "New without tags",
-    images: [
-      "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=500&fit=crop"
-    ],
-    description: "Never used but opened to smell. Repairs and strengthens damaged hair. Full size bottle.",
-    seller: { name: "HairCarePro", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop", rating: 5.0, reviews: 56 },
-    shipping: "Free",
-    badge: "Popular"
-  },
-  {
-    id: 5,
-    title: "Fenty Beauty Gloss Bomb Universal",
-    brand: "Fenty Beauty",
-    category: "makeup",
-    price: 14.00,
-    originalPrice: 21.00,
-    condition: "Like new",
-    images: [
-      "https://images.unsplash.com/photo-1599733594230-6b823cc31b23?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=500&fit=crop"
-    ],
-    description: "Used twice. The perfect universal lip luminizer in the shade Fenty Glow. Non-sticky formula.",
-    seller: { name: "GlossQueen", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop", rating: 4.6, reviews: 178 },
-    shipping: "$2.99",
-    badge: null
-  },
-  {
-    id: 6,
-    title: "CeraVe Hydrating Facial Cleanser",
-    brand: "CeraVe",
-    category: "skincare",
-    price: 10.00,
-    originalPrice: 16.00,
-    condition: "New",
-    images: [
-      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1608979048467-6194bab013f8?w=400&h=500&fit=crop"
-    ],
-    description: "Brand new in packaging. Gentle, non-foaming cleanser with ceramides and hyaluronic acid. 16oz bottle.",
-    seller: { name: "CleanBeauty", avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop", rating: 4.9, reviews: 312 },
-    shipping: "Free",
-    badge: "New"
-  },
-  {
-    id: 7,
-    title: "Rare Beauty Soft Pinch Liquid Blush",
-    brand: "Rare Beauty",
-    category: "makeup",
-    price: 16.00,
-    originalPrice: 23.00,
-    condition: "Good",
-    images: [
-      "https://images.unsplash.com/photo-1503236823255-94609f598e71?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=500&fit=crop"
-    ],
-    description: "Shade: Joy. About 80% remaining. A little goes a long way with this highly pigmented blush!",
-    seller: { name: "BlushBabe", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop", rating: 4.8, reviews: 94 },
-    shipping: "$3.49",
-    badge: null
-  },
-  {
-    id: 8,
-    title: "Dior J'adore Eau de Parfum 50ml",
-    brand: "Dior",
-    category: "fragrance",
-    price: 85.00,
-    originalPrice: 135.00,
-    condition: "Like new",
-    images: [
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&h=500&fit=crop"
-    ],
-    description: "Sprayed 5 times only. Iconic feminine fragrance with notes of ylang-ylang and rose. Comes with box.",
-    seller: { name: "LuxuryScents", avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop", rating: 5.0, reviews: 67 },
-    shipping: "Free",
-    badge: "Luxury"
-  },
-  {
-    id: 9,
-    title: "Sol de Janeiro Brazilian Bum Bum Cream",
-    brand: "Sol de Janeiro",
-    category: "bodycare",
-    price: 32.00,
-    originalPrice: 48.00,
-    condition: "Good",
-    images: [
-      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&h=500&fit=crop"
-    ],
-    description: "About 60% remaining. The famous bum bum cream with pistachio and salted caramel scent. 240ml jar.",
-    seller: { name: "BodyCareAddic", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop", rating: 4.7, reviews: 145 },
-    shipping: "$4.99",
-    badge: null
-  },
-  {
-    id: 10,
-    title: "MAC Ruby Woo Lipstick",
-    brand: "MAC",
-    category: "makeup",
-    price: 12.00,
-    originalPrice: 22.00,
-    condition: "Good",
-    images: [
-      "https://images.unsplash.com/photo-1583241800698-e8ab01830a07?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1591360236480-4ed861025fa1?w=400&h=500&fit=crop"
-    ],
-    description: "Used several times but still has plenty of product. The iconic red matte lipstick everyone needs.",
-    seller: { name: "RedLipLover", avatar: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=100&h=100&fit=crop", rating: 4.5, reviews: 89 },
-    shipping: "$2.99",
-    badge: null
-  },
-  {
-    id: 11,
-    title: "Dyson Airwrap Attachments Set",
-    brand: "Dyson",
-    category: "tools",
-    price: 120.00,
-    originalPrice: 200.00,
-    condition: "Like new",
-    images: [
-      "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1629380519372-0d67a98cd3f9?w=400&h=500&fit=crop"
-    ],
-    description: "Full set of Airwrap attachments including barrels and brush. Used once, in perfect condition.",
-    seller: { name: "HairToolsHQ", avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&h=100&fit=crop", rating: 4.9, reviews: 234 },
-    shipping: "Free",
-    badge: "Hot Deal"
-  },
-  {
-    id: 12,
-    title: "OPI Nail Lacquer Set (6 colors)",
-    brand: "OPI",
-    category: "nails",
-    price: 28.00,
-    originalPrice: 48.00,
-    condition: "New",
-    images: [
-      "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=500&fit=crop"
-    ],
-    description: "Brand new set of 6 OPI nail polishes in popular shades. Perfect for a mini manicure collection.",
-    seller: { name: "NailArtist", avatar: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=100&h=100&fit=crop", rating: 4.8, reviews: 156 },
-    shipping: "$3.99",
-    badge: "New"
-  },
-  {
-    id: 13,
-    title: "Paula's Choice 2% BHA Liquid Exfoliant",
-    brand: "Paula's Choice",
-    category: "skincare",
-    price: 22.00,
-    originalPrice: 35.00,
-    condition: "New without tags",
-    images: [
-      "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=500&fit=crop"
-    ],
-    description: "Full size 118ml bottle, unopened but no box. Cult favorite salicylic acid exfoliant for smooth skin.",
-    seller: { name: "AcidQueen", avatar: "https://images.unsplash.com/photo-1499557354967-2b2d8910bcca?w=100&h=100&fit=crop", rating: 4.9, reviews: 278 },
-    shipping: "Free",
-    badge: "Popular"
-  },
-  {
-    id: 14,
-    title: "NARS Orgasm Blush",
-    brand: "NARS",
-    category: "makeup",
-    price: 20.00,
-    originalPrice: 32.00,
-    condition: "Good",
-    images: [
-      "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1599733594230-6b823cc31b23?w=400&h=500&fit=crop"
-    ],
-    description: "Small dip in the middle but lots of product left. The bestselling peachy-pink blush with golden shimmer.",
-    seller: { name: "BlushCollector", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop", rating: 4.6, reviews: 112 },
-    shipping: "$3.49",
-    badge: null
-  },
-  {
-    id: 15,
-    title: "Moroccanoil Treatment Original 100ml",
-    brand: "Moroccanoil",
-    category: "haircare",
-    price: 28.00,
-    originalPrice: 48.00,
-    condition: "Like new",
-    images: [
-      "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1597354984706-fac992d9306f?w=400&h=500&fit=crop"
-    ],
-    description: "95% full. The iconic argan oil treatment that transforms your hair. Original scent.",
-    seller: { name: "HairOilAddict", avatar: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=100&h=100&fit=crop", rating: 4.8, reviews: 189 },
-    shipping: "$3.99",
-    badge: null
-  },
-  {
-    id: 16,
-    title: "Chanel Coco Mademoiselle 100ml",
-    brand: "Chanel",
-    category: "fragrance",
-    price: 110.00,
-    originalPrice: 165.00,
-    condition: "Like new",
-    images: [
-      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&h=500&fit=crop",
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=500&fit=crop"
-    ],
-    description: "About 90% remaining. The modern classic fragrance with orange, rose, and patchouli notes.",
-    seller: { name: "ChanelLover", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", rating: 5.0, reviews: 98 },
-    shipping: "Free",
-    badge: "Luxury"
-  }
-];
+// // Sample product data
+// const products = [
+//   {
+//     id: 1,
+//     title: "The Ordinary Niacinamide 10% + Zinc 1%",
+//     brand: "The Ordinary",
+//     category: "skincare",
+//     price: 8.50,
+//     originalPrice: 12.00,
+//     condition: "New",
+//     images: [
+//       "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=500&fit=crop"
+//     ],
+//     description: "Brand new, sealed. This serum helps reduce the appearance of blemishes and congestion. Perfect for oily skin types.",
+//     seller: { name: "SarahBeauty", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", rating: 4.9, reviews: 127 },
+//     shipping: "Free",
+//     badge: "New"
+//   },
+//   {
+//     id: 2,
+//     title: "Charlotte Tilbury Pillow Talk Lipstick",
+//     brand: "Charlotte Tilbury",
+//     category: "makeup",
+//     price: 22.00,
+//     originalPrice: 34.00,
+//     condition: "Like new",
+//     images: [
+//       "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?w=400&h=500&fit=crop"
+//     ],
+//     description: "Swatched once, basically new. The iconic Pillow Talk shade that suits everyone. Comes with original box.",
+//     seller: { name: "MakeupLover99", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop", rating: 4.8, reviews: 89 },
+//     shipping: "$3.99",
+//     badge: null
+//   },
+//   {
+//     id: 3,
+//     title: "Drunk Elephant C-Firma Day Serum",
+//     brand: "Drunk Elephant",
+//     category: "skincare",
+//     price: 45.00,
+//     originalPrice: 80.00,
+//     condition: "Good",
+//     images: [
+//       "https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=500&fit=crop"
+//     ],
+//     description: "About 70% remaining. This vitamin C serum is amazing for brightening. Stored in fridge to maintain potency.",
+//     seller: { name: "SkincareJunkie", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop", rating: 4.7, reviews: 203 },
+//     shipping: "$4.99",
+//     badge: null
+//   },
+//   {
+//     id: 4,
+//     title: "Olaplex No. 3 Hair Perfector",
+//     brand: "Olaplex",
+//     category: "haircare",
+//     price: 18.00,
+//     originalPrice: 30.00,
+//     condition: "New without tags",
+//     images: [
+//       "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=500&fit=crop"
+//     ],
+//     description: "Never used but opened to smell. Repairs and strengthens damaged hair. Full size bottle.",
+//     seller: { name: "HairCarePro", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop", rating: 5.0, reviews: 56 },
+//     shipping: "Free",
+//     badge: "Popular"
+//   },
+//   {
+//     id: 5,
+//     title: "Fenty Beauty Gloss Bomb Universal",
+//     brand: "Fenty Beauty",
+//     category: "makeup",
+//     price: 14.00,
+//     originalPrice: 21.00,
+//     condition: "Like new",
+//     images: [
+//       "https://images.unsplash.com/photo-1599733594230-6b823cc31b23?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=500&fit=crop"
+//     ],
+//     description: "Used twice. The perfect universal lip luminizer in the shade Fenty Glow. Non-sticky formula.",
+//     seller: { name: "GlossQueen", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop", rating: 4.6, reviews: 178 },
+//     shipping: "$2.99",
+//     badge: null
+//   },
+//   {
+//     id: 6,
+//     title: "CeraVe Hydrating Facial Cleanser",
+//     brand: "CeraVe",
+//     category: "skincare",
+//     price: 10.00,
+//     originalPrice: 16.00,
+//     condition: "New",
+//     images: [
+//       "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1608979048467-6194bab013f8?w=400&h=500&fit=crop"
+//     ],
+//     description: "Brand new in packaging. Gentle, non-foaming cleanser with ceramides and hyaluronic acid. 16oz bottle.",
+//     seller: { name: "CleanBeauty", avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop", rating: 4.9, reviews: 312 },
+//     shipping: "Free",
+//     badge: "New"
+//   },
+//   {
+//     id: 7,
+//     title: "Rare Beauty Soft Pinch Liquid Blush",
+//     brand: "Rare Beauty",
+//     category: "makeup",
+//     price: 16.00,
+//     originalPrice: 23.00,
+//     condition: "Good",
+//     images: [
+//       "https://images.unsplash.com/photo-1503236823255-94609f598e71?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=500&fit=crop"
+//     ],
+//     description: "Shade: Joy. About 80% remaining. A little goes a long way with this highly pigmented blush!",
+//     seller: { name: "BlushBabe", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop", rating: 4.8, reviews: 94 },
+//     shipping: "$3.49",
+//     badge: null
+//   },
+//   {
+//     id: 8,
+//     title: "Dior J'adore Eau de Parfum 50ml",
+//     brand: "Dior",
+//     category: "fragrance",
+//     price: 85.00,
+//     originalPrice: 135.00,
+//     condition: "Like new",
+//     images: [
+//       "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&h=500&fit=crop"
+//     ],
+//     description: "Sprayed 5 times only. Iconic feminine fragrance with notes of ylang-ylang and rose. Comes with box.",
+//     seller: { name: "LuxuryScents", avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop", rating: 5.0, reviews: 67 },
+//     shipping: "Free",
+//     badge: "Luxury"
+//   },
+//   {
+//     id: 9,
+//     title: "Sol de Janeiro Brazilian Bum Bum Cream",
+//     brand: "Sol de Janeiro",
+//     category: "bodycare",
+//     price: 32.00,
+//     originalPrice: 48.00,
+//     condition: "Good",
+//     images: [
+//       "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=400&h=500&fit=crop"
+//     ],
+//     description: "About 60% remaining. The famous bum bum cream with pistachio and salted caramel scent. 240ml jar.",
+//     seller: { name: "BodyCareAddic", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop", rating: 4.7, reviews: 145 },
+//     shipping: "$4.99",
+//     badge: null
+//   },
+//   {
+//     id: 10,
+//     title: "MAC Ruby Woo Lipstick",
+//     brand: "MAC",
+//     category: "makeup",
+//     price: 12.00,
+//     originalPrice: 22.00,
+//     condition: "Good",
+//     images: [
+//       "https://images.unsplash.com/photo-1583241800698-e8ab01830a07?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1591360236480-4ed861025fa1?w=400&h=500&fit=crop"
+//     ],
+//     description: "Used several times but still has plenty of product. The iconic red matte lipstick everyone needs.",
+//     seller: { name: "RedLipLover", avatar: "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=100&h=100&fit=crop", rating: 4.5, reviews: 89 },
+//     shipping: "$2.99",
+//     badge: null
+//   },
+//   {
+//     id: 11,
+//     title: "Dyson Airwrap Attachments Set",
+//     brand: "Dyson",
+//     category: "tools",
+//     price: 120.00,
+//     originalPrice: 200.00,
+//     condition: "Like new",
+//     images: [
+//       "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1629380519372-0d67a98cd3f9?w=400&h=500&fit=crop"
+//     ],
+//     description: "Full set of Airwrap attachments including barrels and brush. Used once, in perfect condition.",
+//     seller: { name: "HairToolsHQ", avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&h=100&fit=crop", rating: 4.9, reviews: 234 },
+//     shipping: "Free",
+//     badge: "Hot Deal"
+//   },
+//   {
+//     id: 12,
+//     title: "OPI Nail Lacquer Set (6 colors)",
+//     brand: "OPI",
+//     category: "nails",
+//     price: 28.00,
+//     originalPrice: 48.00,
+//     condition: "New",
+//     images: [
+//       "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=500&fit=crop"
+//     ],
+//     description: "Brand new set of 6 OPI nail polishes in popular shades. Perfect for a mini manicure collection.",
+//     seller: { name: "NailArtist", avatar: "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=100&h=100&fit=crop", rating: 4.8, reviews: 156 },
+//     shipping: "$3.99",
+//     badge: "New"
+//   },
+//   {
+//     id: 13,
+//     title: "Paula's Choice 2% BHA Liquid Exfoliant",
+//     brand: "Paula's Choice",
+//     category: "skincare",
+//     price: 22.00,
+//     originalPrice: 35.00,
+//     condition: "New without tags",
+//     images: [
+//       "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=500&fit=crop"
+//     ],
+//     description: "Full size 118ml bottle, unopened but no box. Cult favorite salicylic acid exfoliant for smooth skin.",
+//     seller: { name: "AcidQueen", avatar: "https://images.unsplash.com/photo-1499557354967-2b2d8910bcca?w=100&h=100&fit=crop", rating: 4.9, reviews: 278 },
+//     shipping: "Free",
+//     badge: "Popular"
+//   },
+//   {
+//     id: 14,
+//     title: "NARS Orgasm Blush",
+//     brand: "NARS",
+//     category: "makeup",
+//     price: 20.00,
+//     originalPrice: 32.00,
+//     condition: "Good",
+//     images: [
+//       "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1599733594230-6b823cc31b23?w=400&h=500&fit=crop"
+//     ],
+//     description: "Small dip in the middle but lots of product left. The bestselling peachy-pink blush with golden shimmer.",
+//     seller: { name: "BlushCollector", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop", rating: 4.6, reviews: 112 },
+//     shipping: "$3.49",
+//     badge: null
+//   },
+//   {
+//     id: 15,
+//     title: "Moroccanoil Treatment Original 100ml",
+//     brand: "Moroccanoil",
+//     category: "haircare",
+//     price: 28.00,
+//     originalPrice: 48.00,
+//     condition: "Like new",
+//     images: [
+//       "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1597354984706-fac992d9306f?w=400&h=500&fit=crop"
+//     ],
+//     description: "95% full. The iconic argan oil treatment that transforms your hair. Original scent.",
+//     seller: { name: "HairOilAddict", avatar: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=100&h=100&fit=crop", rating: 4.8, reviews: 189 },
+//     shipping: "$3.99",
+//     badge: null
+//   },
+//   {
+//     id: 16,
+//     title: "Chanel Coco Mademoiselle 100ml",
+//     brand: "Chanel",
+//     category: "fragrance",
+//     price: 110.00,
+//     originalPrice: 165.00,
+//     condition: "Like new",
+//     images: [
+//       "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400&h=500&fit=crop",
+//       "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=500&fit=crop"
+//     ],
+//     description: "About 90% remaining. The modern classic fragrance with orange, rose, and patchouli notes.",
+//     seller: { name: "ChanelLover", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", rating: 5.0, reviews: 98 },
+//     shipping: "Free",
+//     badge: "Luxury"
+//   }
+// ];
 
 // ─── Persistent State via localStorage ───────────────────────────────────────
 
@@ -585,60 +585,8 @@ function initHomePage() {
 }
 
 // ─── PRODUCT DETAIL PAGE ──────────────────────────────────────────────────────
-
-function initProductPage() {
-  const productId = parseInt(localStorage.getItem('gm_currentProduct'));
-  if (!productId) { window.location.href = 'index.html'; return; }
-
-  const product = products.find(p => p.id === productId);
-  if (!product) { window.location.href = 'index.html'; return; }
-
-  addToHistory(productId);
-
-  // Populate fields
-  document.getElementById('productMainImage').src = product.images[0];
-  document.getElementById('productMainImage').alt = product.title;
-  document.getElementById('productThumbnails').innerHTML = product.images.map((img, i) => `
-    <div class="product-thumbnail ${i === 0 ? 'active' : ''}" data-index="${i}">
-      <img src="${img}" alt="${product.title} ${i + 1}">
-    </div>
-  `).join('');
-  document.getElementById('productSellerAvatar').src = product.seller.avatar;
-  document.getElementById('productSellerName').textContent = product.seller.name;
-  document.getElementById('productSellerRating').textContent = `${product.seller.rating} (${product.seller.reviews} reviews)`;
-  document.getElementById('productDetailTitle').textContent = product.title;
-  document.getElementById('productDetailPrice').textContent = `$${product.price.toFixed(2)}`;
-  document.getElementById('productOriginalPrice').textContent = `$${product.originalPrice.toFixed(2)}`;
-  document.getElementById('productDetailBrand').textContent = product.brand;
-  document.getElementById('productDetailCondition').textContent = product.condition;
-  document.getElementById('productDetailDescription').textContent = product.description;
-  document.getElementById('productDetailShipping').textContent = product.shipping;
-
-  // Favourite button state
-  const favBtn = document.getElementById('favouriteDetailBtn');
-  favBtn.classList.toggle('active', state.favourites.has(productId));
-
-  // Thumbnail switcher
-  document.querySelectorAll('.product-thumbnail').forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      document.getElementById('productMainImage').src = product.images[parseInt(thumb.dataset.index)];
-      document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
-    });
-  });
-
-  // Action buttons
-  document.getElementById('backFromProduct').addEventListener('click', () => window.location.href = 'index.html');
-  document.getElementById('addToCartBtn').addEventListener('click', () => addToCart(productId));
-  document.getElementById('buyNowBtn').addEventListener('click', () => { addToCart(productId); window.location.href = 'cart.html'; });
-  favBtn.addEventListener('click', () => { toggleFavourite(productId, favBtn); });
-
-  // Similar products
-  const similar = products.filter(p => p.category === product.category && p.id !== productId).slice(0, 4);
-  const similarGrid = document.getElementById('similarProductsGrid');
-  similarGrid.innerHTML = similar.map(p => createProductCard(p)).join('');
-  attachProductCardListeners(similarGrid);
-}
+// NOTE: Disabled - using Django template rendering for product pages
+// function initProductPage() { ... removed ... }
 
 // ─── FAVOURITES PAGE ──────────────────────────────────────────────────────────
 
@@ -991,7 +939,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   switch (page) {
     case 'home':       initHomePage();       break;
-    case 'product':    initProductPage();    break;
+    case 'product':    break; // Using Django template rendering for product pages
     case 'favourites': initFavouritesPage(); break;
     case 'cart':       initCartPage();       break;
     case 'chatbot':    initChatbotPage();    break;

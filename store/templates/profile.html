@@ -13,8 +13,10 @@
     <div class="profile-banner">
       <div class="profile-header-content">
         <div class="profile-avatar-large">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop"
-               alt="{{ user.get_full_name|default:user.username }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:60px;height:60px;color:#9e9e9e;">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
         </div>
         <h1 class="profile-name">{{ user.get_full_name|default:user.username }}</h1>
         <p class="profile-member-since">Member since {{ user.date_joined|date:"F Y" }}</p>
@@ -50,26 +52,32 @@
       <div class="tab-panel active" id="tab-recommended">
         <h2 class="tab-section-title">Picked for you today</h2>
         <div class="products-grid" id="recommendedGrid">
-          {% for product in recommended_products %}
-          <article class="product-card" data-id="{{ product.parent_asin }}">
+          {% for rec in recommended_products %}
+          <article class="product-card" data-id="{{ rec.product.parent_asin }}">
             <div class="product-image">
-              <a href="{% url 'product' product.parent_asin %}">
-                <img src="{{ product.highres_image_url }}" alt="{{ product.title }}" loading="lazy">
+              <a href="{% url 'product' rec.product.parent_asin %}">
+                <img src="{{ rec.product.highres_image_url }}" alt="{{ rec.product.title }}" loading="lazy">
               </a>
             </div>
             <div class="product-info">
-              <div class="product-price">${{ product.price }}</div>
+              <div class="product-price">${{ rec.product.price }}</div>
               <h3 class="product-title">
-                <a href="{% url 'product' product.parent_asin %}">{{ product.title }}</a>
+                <a href="{% url 'product' rec.product.parent_asin %}">{{ rec.product.title }}</a>
               </h3>
               <div class="product-meta">
-                <span class="product-brand">{{ product.store }}</span>
-                <span class="product-condition">New</span>
+                <span class="product-brand">{{ rec.product.store }}</span>
+              </div>
+              <div class="reco-badge reco-badge--{{ rec.method }}">
+                {{ rec.explanation }}
               </div>
             </div>
           </article>
           {% empty %}
-          <p>No recommendations available yet.</p>
+          <div class="empty-state profile-empty">
+            <h3>No recommendations yet</h3>
+            <p>Browse some products and we'll personalize your feed!</p>
+            <a href="{% url 'home' %}" class="browse-btn">Explore products</a>
+          </div>
           {% endfor %}
         </div>
       </div>
@@ -100,7 +108,6 @@
               </h3>
               <div class="product-meta">
                 <span class="product-brand">{{ product.store }}</span>
-                <span class="product-condition">New</span>
               </div>
             </div>
           </article>
@@ -117,10 +124,6 @@
         </div>
         {% endif %}
       </div>
-            </div>
-          </article>
-        </div>
-      </div>
 
       <!-- History Tab -->
       <div class="tab-panel" id="tab-history">
@@ -129,27 +132,24 @@
           {% for entry in viewing_history %}
           <div class="history-item">
             <div class="history-image">
-              <a href="{% url 'product' entry.parent_asin.parent_asin %}">
-                <img src="{{ entry.parent_asin.highres_image_url }}" alt="{{ entry.parent_asin.title }}">
+              <a href="{% url 'product' entry.product.parent_asin %}">
+                <img src="{{ entry.product.highres_image_url }}" alt="{{ entry.product.title }}">
               </a>
             </div>
             <div class="history-details">
               <h3 class="history-title">
-                <a href="{% url 'product' entry.parent_asin.parent_asin %}">{{ entry.parent_asin.title }}</a>
+                <a href="{% url 'product' entry.product.parent_asin %}">{{ entry.product.title }}</a>
               </h3>
-              <p class="history-date">Viewed: {{ entry.review_date|date:"M j, Y" }}</p>
-            </div>
-            {% if entry.rating %}
-            <div class="history-rating">
-              {% for i in "12345" %}
-              {% if forloop.counter <= entry.rating %}
-              <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              {% else %}
-              <svg viewBox="0 0 24 24" class="empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <p class="history-date">Viewed: {{ entry.viewed_at|date:"M j, Y" }}</p>
+              {% if entry.product.average_rating %}
+              <div class="history-rating">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;color:#f59e0b;">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <span>{{ entry.product.average_rating|floatformat:1 }}</span>
+              </div>
               {% endif %}
-              {% endfor %}
             </div>
-            {% endif %}
           </div>
           {% endfor %}
         </div>
@@ -168,19 +168,33 @@
 
       <!-- Reviews Tab -->
       <div class="tab-panel" id="tab-reviews">
-        {% if user_reviews %}
+        {% if user_ratings %}
         <div class="reviews-list" id="reviewsList">
-          {% for review in user_reviews %}
+          {% for rating in user_ratings %}
           <div class="review-card">
             <div class="review-product-image">
-              <a href="{% url 'product' review.parent_asin.parent_asin %}">
-                <img src="{{ review.parent_asin.highres_image_url }}" alt="{{ review.parent_asin.title }}">
+              <a href="{% url 'product' rating.parent_asin.parent_asin %}">
+                <img src="{{ rating.parent_asin.highres_image_url }}" alt="{{ rating.parent_asin.title }}">
               </a>
             </div>
             <div class="review-content">
-              <h3 class="review-product-name">{{ review.parent_asin.title }}</h3>
-              <p class="review-text">{{ review.text }}</p>
-              <span class="review-date">{{ review.parent_asin.parent_asin|date:"F j, Y" }}</span>
+              <h3 class="review-product-name">{{ rating.parent_asin.title }}</h3>
+              <div class="review-stars">
+                {% for i in "12345" %}
+                  {% if forloop.counter <= rating.rating %}
+                  <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;color:#f59e0b;">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  {% else %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:#d1d5db;">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              {% if rating.review_date %}
+              <span class="review-date">{{ rating.review_date|date:"F j, Y" }}</span>
+              {% endif %}
             </div>
           </div>
           {% endfor %}

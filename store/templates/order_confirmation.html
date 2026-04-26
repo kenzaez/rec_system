@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Confirmed - GlowMarket{% endblock %}
+{% block page_name %}order_confirmation{% endblock %}
+
+{% block content %}
+<main class="page-content" id="confirmationPage">
+  <div class="page-container">
+
+    <div class="confirmation-card">
+      <div class="confirmation-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+
+      <h1 class="confirmation-title">Order Confirmed!</h1>
+      <p class="confirmation-subtitle">Thank you for your purchase, {{ order.full_name }}.</p>
+
+      <div class="confirmation-details">
+        <div class="confirmation-row">
+          <span>Order Number</span>
+          <strong>#{{ order.pk }}</strong>
+        </div>
+        <div class="confirmation-row">
+          <span>Date</span>
+          <strong>{{ order.created_at|date:"F j, Y" }}</strong>
+        </div>
+        <div class="confirmation-row">
+          <span>Status</span>
+          <span class="order-status order-status--{{ order.status }}">{{ order.get_status_display }}</span>
+        </div>
+        <div class="confirmation-row">
+          <span>Shipping to</span>
+          <strong>{{ order.address }}, {{ order.city }}, {{ order.state }} {{ order.zip_code }}</strong>
+        </div>
+      </div>
+
+      <div class="confirmation-items">
+        <h3>Items Ordered</h3>
+        {% for item in order_items %}
+        <div class="confirmation-item">
+          <div class="confirmation-item-image">
+            <img src="{{ item.product.highres_image_url }}" alt="{{ item.product.title }}">
+          </div>
+          <div class="confirmation-item-details">
+            <span class="confirmation-item-title">{{ item.product.title|truncatechars:50 }}</span>
+            <span class="confirmation-item-meta">Qty: {{ item.quantity }} × ${{ item.price }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="confirmation-totals">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>${{ order.subtotal }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>{% if order.shipping == 0 %}Free{% else %}${{ order.shipping }}{% endif %}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>${{ order.total }}</span>
+        </div>
+      </div>
+
+      <a href="{% url 'home' %}" class="browse-btn" style="margin-top: 2rem; display: inline-block;">Continue Shopping</a>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

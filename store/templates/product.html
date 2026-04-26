@@ -39,12 +39,15 @@
       <div class="product-detail-info">
         <div class="product-detail-seller">
           <div class="seller-avatar">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt="{{ product.store }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;color:#9e9e9e;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
           </div>
           <div class="seller-info">
             <span class="seller-name">{{ product.store }}</span>
             <div class="seller-rating">
-              <svg viewBox="0 0 24 24" fill="currentColor">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;color:#f59e0b;">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
               </svg>
               <span>{{ product.average_rating|floatformat:1 }} ({{ product.rating_number }} reviews)</span>
@@ -54,14 +57,17 @@
 
         <h1 class="product-detail-title">{{ product.title }}</h1>
         <div class="product-detail-price">${{ product.price }}</div>
-        <div class="product-detail-original-price">${{ product.price|add:10 }}</div>
 
         <div class="product-detail-meta">
           <span class="product-detail-brand">{{ product.store }}</span>
-          <span class="product-detail-condition">New</span>
+          {% if product.main_category %}
+          <span class="product-detail-condition">{{ product.main_category }}</span>
+          {% endif %}
         </div>
 
+        {% if product.description %}
         <p class="product-detail-description">{{ product.description }}</p>
+        {% endif %}
 
         <div class="product-detail-shipping">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -71,6 +77,27 @@
             <circle cx="18.5" cy="18.5" r="2.5"></circle>
           </svg>
           <span>Shipping: <strong>Free on orders over $50</strong></span>
+        </div>
+
+        <!-- Rating Form -->
+        <div class="rating-section">
+          <h3 class="rating-section-title">Rate this product</h3>
+          <form method="post" action="{% url 'rate_product' product.parent_asin %}" class="rating-form">
+            {% csrf_token %}
+            <div class="star-rating-input" id="starRatingInput">
+              {% for i in "54321" %}
+              <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" {% if user_rating == i|add:0 %}checked{% endif %}>
+              <label for="star{{ i }}" title="{{ i }} star{{ i|pluralize }}">
+                <svg viewBox="0 0 24 24">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </label>
+              {% endfor %}
+            </div>
+            <button type="submit" class="rate-submit-btn">
+              {% if user_rating %}Update Rating{% else %}Submit Rating{% endif %}
+            </button>
+          </form>
         </div>
 
         <div class="product-detail-actions">
@@ -123,8 +150,21 @@
             </h3>
             <div class="product-meta">
               <span class="product-brand">{{ similar.store }}</span>
-              <span class="product-condition">New</span>
             </div>
+            {% if similar_explanations %}
+              {% for asin, explanation in similar_explanations.items %}
+                {% if asin == similar.parent_asin %}
+                <div class="reco-badge reco-badge--content_based">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  {{ explanation }}
+                </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
           </div>
         </article>
         {% endfor %}
