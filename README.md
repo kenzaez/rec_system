@@ -16,16 +16,20 @@ A Django-based e-commerce platform with AI-powered product recommendations tailo
 ## Screenshots
 
 ### Home Page
-[Screenshot placeholder]
+<img width="941" height="425" alt="image" src="https://github.com/user-attachments/assets/2078097c-b5f3-4729-a9fd-9dc3720f3246" />
+
 
 ### Product Detail
-[Screenshot placeholder]
+<img width="375" height="350" alt="image" src="https://github.com/user-attachments/assets/bfc9f08d-5ce9-4a27-96f5-a42c4c0982cc" />
+
 
 ### Checkout
-[Screenshot placeholder]
+<img width="947" height="385" alt="image" src="https://github.com/user-attachments/assets/ed50c9b5-f604-42c5-a237-44d4420b8195" />
+
 
 ### Profile & Recommendations
-[Screenshot placeholder]
+<img width="735" height="402" alt="image" src="https://github.com/user-attachments/assets/b372b7ee-77f4-45ec-b90b-8fceb0a31c22" />
+
 
 ## Tech Stack
 
@@ -43,8 +47,6 @@ A Django-based e-commerce platform with AI-powered product recommendations tailo
 5. Visit `http://localhost:8000`
 
 ## Demo Account
-
-- Email: `demo@beautyrec.com`
 - Use the demo login button on the login page
 
 ---
