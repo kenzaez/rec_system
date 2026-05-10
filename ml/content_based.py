@@ -14,7 +14,7 @@ class ContentBasedRecommender:
 
     def load_data(self):
         """Loads product data from the database."""
-        print("Loading products from database")
+        print("Loading products from database...")
         query = "SELECT parent_asin, title, cb_text, image_url FROM products"
         self.df = pd.read_sql(query, self.engine)
         
@@ -30,11 +30,11 @@ class ContentBasedRecommender:
         if self.df is None or self.df.empty:
             raise ValueError("Data not loaded. Call load_data() first.")
             
-        print("Building TF-IDF matrix")
+        print("Building TF-IDF matrix...")
         tfidf = TfidfVectorizer(stop_words='english')
         tfidf_matrix = tfidf.fit_transform(self.df['cb_text'])
         
-        print("Computing cosine similarity")
+        print("Computing cosine similarity...")
         self.cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
         print("Model generated successfully.")
 

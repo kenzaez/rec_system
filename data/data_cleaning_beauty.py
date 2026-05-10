@@ -23,8 +23,11 @@ import numpy as np
 
 
 
-RAW_DIR = Path(r"C:\Users\kenza\Desktop\pfa")
-OUTPUT_DIR = Path(r"C:\Users\kenza\Desktop\pfa\processed")
+BASE_DIR = Path(__file__).resolve().parent
+RAW_DIR = BASE_DIR / "raw"
+OUTPUT_DIR = BASE_DIR / "processed"
+
+RAW_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 REVIEWS_FILE  = RAW_DIR / "All_Beauty.jsonl"
